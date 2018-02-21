@@ -3,10 +3,9 @@ const morgan = require('morgan');
 const path = require('path');
 const socket = require('socket.io');
 const app = express();
-const http = require('http').Server(app)
+const http = require('http').Server(app);
 const io = socket(http);
-const PORT = process.env.PORT || 3000
-
+const PORT = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
 
@@ -16,16 +15,28 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 })
 
+// TODO: write up the logic for all of the socket connections
+let onlineUsers = 0;
 io.on('connection', (socket) => {
-  // TODO: write up the logic for all of the socket connections
+  //socket event for entry
   socket.on('enter', (payload) => {
-    console.log(`${payload.user} has entered the chat room`)
-  })
+    onlineUsers++;
+    console.log(`there are currently ${onlineUsers} users inside`)
+    console.log(`${payload.user} has entered ${payload.room}`)
+    socket.join(payload.room)
+  });
+  //socket event for changing turns
   socket.on('change turn', (payload) => {
-    console.log('turn has been passed')
+    console.log('turn has been passed', payload.turn_count)
+  });
+
+  socket.on('leave room', (payload) => {
+    onlineUsers--;
+    socket.leave(payload.room)
+    console.log('a user has disconnected from', payload.room)
   })
-})
+});
 
 http.listen(PORT, () => {
-  console.log(`liveonport${PORT}`)
+  console.log(`liveonport${PORT}`);
 });
