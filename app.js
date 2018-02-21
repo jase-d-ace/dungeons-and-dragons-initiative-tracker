@@ -21,6 +21,9 @@ io.on('connection', (socket) => {
   socket.on('enter', (payload) => {
     console.log(`${payload.user} has entered the chat room`)
   })
+  socket.on('change turn', (payload) => {
+    console.log('turn has been passed')
+  })
 })
 
 http.listen(PORT, () => {
