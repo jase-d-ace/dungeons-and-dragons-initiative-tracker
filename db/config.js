@@ -9,7 +9,7 @@ const pgp = require('pg-promise')(options);
 function setDatabase() {
   if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
     return pgp({
-      database: dnd_auth_db,
+      database: 'dnd_auth_db',
       port: 5432,
       host: 'localhost'
     });
