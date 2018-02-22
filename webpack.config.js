@@ -28,8 +28,8 @@ const config = {
         },
         test: /.*\.(gif|png|jpe?g|svg)$/i
       },
-    ] //end of rules array. actually put all loaders n shit here.
-  }, //end of module object. put all loaders n shit here.
+    ] //end of rules array. actually put all loaders here.
+  }, //end of module object.
   plugins: [
         new ExtractTextWebpackPlugin('style.css')
   ]
