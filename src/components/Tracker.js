@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import axios from 'axios';
 const socket = io();
 class Tracker extends Component {
   constructor() {
@@ -19,6 +20,13 @@ class Tracker extends Component {
     })
     socket.on('some event', (payload) => {
       console.log(payload)
+    })
+    axios.get('/api/characters')
+    .then( character => {
+      console.log(character.data.character)
+    })
+    .catch( err => {
+      console.log(err)
     })
   }
 
