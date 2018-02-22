@@ -34,14 +34,15 @@ io.on('connection', (socket) => {
   });
   //socket event for changing turns
   socket.on('change turn', (payload) => {
-    // console.log('turn has been passed', payload.turn_count)
+    console.log('turn has been passed', payload)
     if (currentTurn < onlineUsers) {
       currentTurn++;
-      console.log(currentTurn, 'from change turn event')
-      socket.emit('some event', {
-        current_turn: `it is currently ${currentTurn}'s turn`
-      });
+      console.log(payload, 'from change turn event')
+
     };
+    socket.emit('inform', {
+     current_turn: `it is currently ${payload.turn_count}'s turn`
+    });
     if (currentTurn === onlineUsers) {
       currentTurn = 1;
     }
