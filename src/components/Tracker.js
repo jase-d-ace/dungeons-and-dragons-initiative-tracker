@@ -17,12 +17,15 @@ class Tracker extends Component {
       room: 'main room',
       user: 'test user'
     })
+    socket.on('some event', (payload) => {
+      console.log(payload)
+    })
   }
 
-  componentWillUnmount() {
+  leaveRoom() {
     socket.emit('leave room', {
       room: 'main room'
-    });
+    })
   }
 
   passTurn() {
@@ -36,6 +39,7 @@ class Tracker extends Component {
     return (
       <div className="App">
         <button onClick={this.passTurn}>Pass your turn</button>
+        <button onClick={this.leaveRoom}>Leave this room</button>
       </div>
     )
   }
