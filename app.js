@@ -15,8 +15,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 })
 
+app.use('/api/characters', require('./routes/character-routes'))
+
 // TODO: write up the logic for all of the socket connections
-// TODO: I need to be able to track a turn, and if it hits the number of online users, go back to zero. This will be how I track whose turn it is based on how many people are in the game
 
 let onlineUsers = 0;
 let currentTurn = 0;
@@ -39,16 +40,16 @@ io.on('connection', (socket) => {
       console.log(currentTurn, 'from change turn event')
       socket.emit('some event', {
         current_turn: `it is currently ${currentTurn}'s turn`
-      })
+      });
     };
     if (currentTurn === onlineUsers) {
-      currentTurn = 0;
+      currentTurn = 1;
     }
     console.log(currentTurn)
   });
 
   socket.on('leave room', (payload) => {
-    while (onlineUsers > 0) {
+    if (onlineUsers > 0) {
       onlineUsers--;
       console.log('a user has left the room')
     };

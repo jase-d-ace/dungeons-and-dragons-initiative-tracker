@@ -10,13 +10,27 @@
     "build-dev": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jase-d-ace/dungeons-and-dragons-intiative-tracker"
+  },
+  "author": "Jason Andrada",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^5.0.0",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pg-promise": "^7.5.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
     "socket.io": "^2.0.4",
     "socket.io-client": "^2.0.4"
   },
