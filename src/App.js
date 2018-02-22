@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client';
-const socket = io();
-import Tracker from './Tracker';
+
+import Tracker from './components/Tracker';
 class App extends Component {
  render() {
    return (
