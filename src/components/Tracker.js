@@ -6,9 +6,7 @@ class Tracker extends Component {
   constructor() {
     super();
     this.state = {
-      one: 'two',
-      three: 'four',
-      five: 'six'
+      character: null
     }
     this.passTurn = this.passTurn.bind(this)
   }
@@ -19,11 +17,16 @@ class Tracker extends Component {
       user: 'test user'
     })
     socket.on('some event', (payload) => {
+      console.log(payload.current_turn)
+    })
+    socket.on('inform', (payload) => {
       console.log(payload)
     })
     axios.get('/api/characters')
     .then( character => {
-      console.log(character.data.character)
+      this.setState({
+        character: character.data.character
+      })
     })
     .catch( err => {
       console.log(err)
@@ -37,15 +40,16 @@ class Tracker extends Component {
   }
 
   passTurn() {
+    console.log(this.state, 'from passTurn')
     socket.emit('change turn', {
-      turn_count: this.state.one
+      turn_count: this.state.character.name
     });
   }
   render() {
     //TODO: add logic that will eventually move the game forward.
     console.log('loaded', this.state)
     return (
-      <div className="App">
+      <div className="Tracker">
         <button onClick={this.passTurn}>Pass your turn</button>
         <button onClick={this.leaveRoom}>Leave this room</button>
       </div>
