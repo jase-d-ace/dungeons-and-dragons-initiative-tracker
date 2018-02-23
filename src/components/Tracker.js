@@ -17,10 +17,6 @@ class Tracker extends Component {
   }
 
   componentDidMount() {
-    socket.emit('enter', {
-      room: 'main room',
-      user: 'test user'
-    })
     socket.on('some event', (payload) => {
       console.log(payload.current_turn)
     })
@@ -31,6 +27,11 @@ class Tracker extends Component {
     .then( character => {
       this.setState({
         character: character.data.character
+      }, () => {
+    socket.emit('enter', {
+      room: 'main room',
+      user: this.state.character.name
+    })
       })
     })
     .catch( err => {
@@ -73,7 +74,7 @@ class Tracker extends Component {
         <button onClick={this.passTurn}>Pass your turn</button>
         <button onClick={this.leaveRoom}>Leave this room</button>
         <button onClick={this.rollInitiative}>Roll Initiative!</button>
-        <h1>{this.state.initiativeRolled ? this.state.initiative : 'Roll for initiative!!'}</h1>
+        <h1>{this.state.initiativeRolled ? 'Initiative: ' + this.state.initiative : 'Roll for initiative!!'}</h1>
       </div>
     )
   }
