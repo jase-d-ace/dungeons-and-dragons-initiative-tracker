@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import axios from 'axios';
 const socket = io();
 class Tracker extends Component {
   constructor() {
     super();
     this.state = {
-      one: 'two',
-      three: 'four',
-      five: 'six'
+      character: null,
+      initiativeRolled: false
     }
     this.passTurn = this.passTurn.bind(this)
+    this.rollInitiative = this.rollInitiative.bind(this)
   }
 
   componentDidMount() {
@@ -18,7 +19,19 @@ class Tracker extends Component {
       user: 'test user'
     })
     socket.on('some event', (payload) => {
+      console.log(payload.current_turn)
+    })
+    socket.on('inform', (payload) => {
       console.log(payload)
+    })
+    axios.get('/api/characters')
+    .then( character => {
+      this.setState({
+        character: character.data.character
+      })
+    })
+    .catch( err => {
+      console.log(err)
     })
   }
 
@@ -28,18 +41,35 @@ class Tracker extends Component {
     })
   }
 
-  passTurn() {
+passTurn() {
+    console.log(this.state, 'from passTurn')
     socket.emit('change turn', {
-      turn_count: this.state.one
+      turn_count: this.state.character.name
     });
   }
+
+  rollInitiative() {
+    let initiative = Math.ceil(Math.random() * 20)
+    this.setState({
+      initiativeRolled: true,
+      initiative
+    }, () => {
+      socket.emit('initiative rolled', {
+        player_name: this.state.character.name,
+        initiative: this.state.initiative
+      })
+    })
+  }
+
   render() {
     //TODO: add logic that will eventually move the game forward.
     console.log('loaded', this.state)
     return (
-      <div className="App">
+      <div className="Tracker">
         <button onClick={this.passTurn}>Pass your turn</button>
         <button onClick={this.leaveRoom}>Leave this room</button>
+        <button onClick={this.rollInitiative}>Roll Initiative!</button>
+        <h1>{this.state.initiativeRolled ? this.state.initiative : 'Roll for initiative!!'}</h1>
       </div>
     )
   }
