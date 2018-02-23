@@ -38,7 +38,6 @@ io.on('connection', (socket) => {
     if (currentTurn < onlineUsers) {
       currentTurn++;
       console.log(payload, 'from change turn event')
-
     };
     socket.emit('inform', {
      current_turn: `it is currently ${payload.turn_count}'s turn`
@@ -48,6 +47,10 @@ io.on('connection', (socket) => {
     }
     console.log(currentTurn)
   });
+
+  socket.on('initiative rolled', (payload) => {
+    console.log(`${payload.player_name} rolled a ${payload.initiative} on initiative`)
+  })
 
   socket.on('leave room', (payload) => {
     if (onlineUsers > 0) {
