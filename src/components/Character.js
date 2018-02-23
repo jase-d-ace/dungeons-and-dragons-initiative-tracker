@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Character = (props) => {
-  console.log(props, 'from character')
   return (
     <div className="Character">
       <h1>{props.name}, the {props.race} {props.class}</h1>
