@@ -41,6 +41,7 @@ class Login extends Component {
     .catch( err => {
       console.log('we messed up', err)
     });
+    e.target.reset();
   };
 
   render() {
