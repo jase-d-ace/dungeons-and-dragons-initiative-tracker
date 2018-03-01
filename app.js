@@ -35,12 +35,12 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname + '/index.html'));
-});
 
 app.use('/auth', require('./routes/auth-routes'));
 app.use('/api/characters', require('./routes/character-routes'));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
 app.get('*', (req, res) => {
   res.status(404).json({
     message: 'this is not the page you are looking for'
@@ -51,6 +51,7 @@ app.get('*', (req, res) => {
 
 let onlineUsers = 0;
 let currentTurn = 0;
+io.set('transports', ['websocket']);
 io.on('connection', (socket) => {
   //socket event for entry
   socket.on('enter', (payload) => {
@@ -82,7 +83,7 @@ io.on('connection', (socket) => {
     console.log(`${payload.player_name} rolled a ${payload.initiative} on initiative`)
   })
 
-  socket.on('leave room', (payload) => {
+  socket.on('disconnect', (payload) => {
     if (onlineUsers > 0) {
       onlineUsers--;
       console.log('a user has left the room')

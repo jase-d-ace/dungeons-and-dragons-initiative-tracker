@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import Character from './Character';
-const socket = io();
+const socket = io({ transports: ['websocket'], upgrade: false });
 
 class Tracker extends Component {
 
