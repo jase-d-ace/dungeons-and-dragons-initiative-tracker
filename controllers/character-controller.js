@@ -3,7 +3,7 @@ const Character = new character;
 
 class CharacterController {
   show(req, res) {
-    Character.findOne(1)
+    Character.findOne(req.user.id)
     .then( character => {
       res.json({
         message: 'OK',

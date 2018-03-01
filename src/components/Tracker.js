@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom'
 import Character from './Character';
-const socket = io();
+//found the fix for the refresh bug here:
+//https://stackoverflow.com/questions/41924713/node-js-socket-io-page-refresh-multiple-connections
+const socket = io({ transports: ['websocket'], upgrade: false });
 
 class Tracker extends Component {
 
@@ -10,16 +13,14 @@ class Tracker extends Component {
     super();
     this.state = {
       character: null,
-      initiativeRolled: false
+      initiativeRolled: false,
+      fireRedirect: false
     }
     this.passTurn = this.passTurn.bind(this)
     this.rollInitiative = this.rollInitiative.bind(this)
   }
 
   componentDidMount() {
-    socket.on('some event', (payload) => {
-      console.log(payload.current_turn)
-    })
     socket.on('inform', (payload) => {
       console.log(payload)
     })
@@ -35,13 +36,10 @@ class Tracker extends Component {
       })
     })
     .catch( err => {
+      this.setState({
+        fireRedirect: true
+      })
       console.log(err)
-    })
-  }
-
-  leaveRoom() {
-    socket.emit('leave room', {
-      room: 'main room'
     })
   }
 
@@ -72,9 +70,9 @@ class Tracker extends Component {
       <div className="Tracker">
       {this.state.character ? <Character {...this.state.character} /> : ''}
         <button onClick={this.passTurn}>Pass your turn</button>
-        <button onClick={this.leaveRoom}>Leave this room</button>
-        <button onClick={this.rollInitiative}>Roll Initiative!</button>
+      {this.state.initiativeRolled ? 'Initiative Rolled! Your battle position is set.' : <button onClick={this.rollInitiative}>Roll Initiative!</button>}
         <h1>{this.state.initiativeRolled ? 'Initiative: ' + this.state.initiative : 'Roll for initiative!!'}</h1>
+        {this.state.fireRedirect ? <Redirect to='/' /> : ''}
       </div>
     )
   }

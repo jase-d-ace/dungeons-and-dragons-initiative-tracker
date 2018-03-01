@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Tracker from './components/Tracker';
 import Login from './components/Login';
 import Register from './components/Register'
-// TODO: create login component and then start on auth...
+
 class App extends Component {
  render() {
    return (
