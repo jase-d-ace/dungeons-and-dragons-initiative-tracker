@@ -51,21 +51,21 @@ app.get('*', (req, res) => {
 
 let onlineUsers = 0;
 let currentTurn = 0;
+let initiativeOrder = [];
+//set default transport protocol to websocket instead of http polling
 io.set('transports', ['websocket']);
 io.on('connection', (socket) => {
   //socket event for entry
   socket.on('enter', (payload) => {
     onlineUsers++;
-    console.log(onlineUsers)
-    console.log(`there are currently ${onlineUsers} users inside`)
     console.log(`${payload.user} has entered ${payload.room}`)
+    //TODO: find something to do on connection. Feedback to player or something.
     socket.emit('some event', {
       testing: 'stuff'
     });
   });
   //socket event for changing turns
   socket.on('change turn', (payload) => {
-    console.log('turn has been passed', payload)
     if (currentTurn < onlineUsers) {
       currentTurn++;
       console.log(payload, 'from change turn event')
@@ -80,13 +80,19 @@ io.on('connection', (socket) => {
   });
 
   socket.on('initiative rolled', (payload) => {
-    console.log(`${payload.player_name} rolled a ${payload.initiative} on initiative`)
-  })
+    initiativeOrder.push({
+      name: payload.player_name,
+      initiative: payload.initiative
+    })
+    console.log('initiative rolled', initiativeOrder)
+  });
 
+  //don't be an idiot and forget a disconnect listener
   socket.on('disconnect', (payload) => {
     if (onlineUsers > 0) {
       onlineUsers--;
       console.log('a user has left the room')
+      initiativeOrder = [];
     };
     console.log('no users left');
   })
