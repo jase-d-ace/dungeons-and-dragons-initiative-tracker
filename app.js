@@ -84,7 +84,10 @@ io.on('connection', (socket) => {
       name: payload.player_name,
       initiative: payload.initiative
     })
-    console.log('initiative rolled', initiativeOrder)
+    let sortedOrder = initiativeOrder.sort((a, b) => {
+      return a.initiative < b.initiative
+    })
+    console.log('initiative rolled', sortedOrder)
   });
 
   //don't be an idiot and forget a disconnect listener
