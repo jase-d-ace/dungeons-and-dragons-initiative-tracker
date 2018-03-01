@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
+import Character from './Character';
 const socket = io();
+
 class Tracker extends Component {
+
   constructor() {
     super();
     this.state = {
@@ -14,10 +17,6 @@ class Tracker extends Component {
   }
 
   componentDidMount() {
-    socket.emit('enter', {
-      room: 'main room',
-      user: 'test user'
-    })
     socket.on('some event', (payload) => {
       console.log(payload.current_turn)
     })
@@ -28,6 +27,11 @@ class Tracker extends Component {
     .then( character => {
       this.setState({
         character: character.data.character
+      }, () => {
+    socket.emit('enter', {
+      room: 'main room',
+      user: this.state.character.name
+        })
       })
     })
     .catch( err => {
@@ -41,7 +45,7 @@ class Tracker extends Component {
     })
   }
 
-passTurn() {
+  passTurn() {
     console.log(this.state, 'from passTurn')
     socket.emit('change turn', {
       turn_count: this.state.character.name
@@ -66,10 +70,11 @@ passTurn() {
     console.log('loaded', this.state)
     return (
       <div className="Tracker">
+      {this.state.character ? <Character {...this.state.character} /> : ''}
         <button onClick={this.passTurn}>Pass your turn</button>
         <button onClick={this.leaveRoom}>Leave this room</button>
         <button onClick={this.rollInitiative}>Roll Initiative!</button>
-        <h1>{this.state.initiativeRolled ? this.state.initiative : 'Roll for initiative!!'}</h1>
+        <h1>{this.state.initiativeRolled ? 'Initiative: ' + this.state.initiative : 'Roll for initiative!!'}</h1>
       </div>
     )
   }

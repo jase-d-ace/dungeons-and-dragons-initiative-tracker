@@ -2,20 +2,50 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const socket = require('socket.io');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
 const app = express();
 const http = require('http').Server(app);
 const io = socket(http);
 const PORT = process.env.PORT || 3000;
 
+require('dotenv').config();
+
 app.use(morgan('dev'));
 
 app.use(express.static('build'));
 
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
+app.use(cookieParser());
+
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+
+app.use(passport.session());
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
-})
+});
 
-app.use('/api/characters', require('./routes/character-routes'))
+app.use('/auth', require('./routes/auth-routes'));
+app.use('/api/characters', require('./routes/character-routes'));
+app.get('*', (req, res) => {
+  res.status(404).json({
+    message: 'this is not the page you are looking for'
+  });
+});
 
 // TODO: write up the logic for all of the socket connections
 
