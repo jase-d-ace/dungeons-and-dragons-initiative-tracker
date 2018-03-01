@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
-
+import { BrowserRouter, Route } from 'react-router-dom';
 import Tracker from './components/Tracker';
+import Login from './components/Login';
+import Register from './components/Register'
+// TODO: create login component and then start on auth...
 class App extends Component {
  render() {
    return (
-      <div className="App">
-        <h1>Oh hey, this is a sockets project</h1>
-        <Tracker />
+     <BrowserRouter>
+      <div className="router">
+        <Route exact path="/" component={Login} />
+        <Route path="/tracker" component={Tracker} />
+        <Route path="/signup" component={Register} />
       </div>
+     </BrowserRouter>
     )
   }
 }

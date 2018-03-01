@@ -1,7 +1,7 @@
 const character = require('../models/character');
 const Character = new character;
 
-class Controller {
+class CharacterController {
   show(req, res) {
     Character.findOne(1)
     .then( character => {
@@ -18,4 +18,4 @@ class Controller {
   }
 }
 
-module.exports = Controller;
+module.exports = CharacterController;

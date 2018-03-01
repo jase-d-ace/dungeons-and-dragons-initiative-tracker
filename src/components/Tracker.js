@@ -31,7 +31,7 @@ class Tracker extends Component {
     socket.emit('enter', {
       room: 'main room',
       user: this.state.character.name
-    })
+        })
       })
     })
     .catch( err => {

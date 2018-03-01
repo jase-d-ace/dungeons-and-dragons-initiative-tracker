@@ -1,8 +1,11 @@
 const db = require('../db/config');
 
 class Character {
+  findByCharacterName(name) {
+    return db.oneOrNone(`SELECT * FROM characters WHERE name = $1`, name)
+  }
   findOne(id) {
-    return db.oneOrNone(`SELECT *, characters.name FROM characters JOIN spells ON spells.character_id = 1 WHERE characters.id=$1`, id);
+    return db.oneOrNone(`SELECT * FROM characters WHERE user_id = $1`, id)
   }
 }
 
