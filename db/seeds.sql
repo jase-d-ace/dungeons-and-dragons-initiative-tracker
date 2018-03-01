@@ -1,7 +1,7 @@
 \c dnd_auth_db
 
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS characters;
+-- DROP TABLE IF EXISTS users CASCADE;
+-- DROP TABLE IF EXISTS characters;
 
 CREATE TABLE IF NOT EXISTS users(
   id SERIAL PRIMARY KEY NOT NULL,
@@ -31,5 +31,5 @@ CREATE TABLE IF NOT EXISTS characters(
 
 
 INSERT INTO characters(name, race, class, ac, health, str_mod, dex_mod, con_mod, int_mod, wis_mod, cha_mod, proficiency, user_id) VALUES
-('sylvan', 'wood elf', 'monk', '16', '45', '+0', '+4', '+1', '+1', '+2', '-1', '+3', 1)
-
+-- ('sylvan', 'wood elf', 'monk', '16', '45', '+0', '+4', '+1', '+1', '+2', '-1', '+3', 1)
+-- ('ranathar', 'drow', 'rogue', '14', '32', '+1', '+4', '+0', '+1', '-1', '+2', '+3', 2)
