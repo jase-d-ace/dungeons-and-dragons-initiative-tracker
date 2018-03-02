@@ -21,9 +21,6 @@ class Tracker extends Component {
   }
 
   componentDidMount() {
-    socket.on('inform', (payload) => {
-      console.log(payload)
-    })
     axios.get('/api/characters')
     .then( character => {
       this.setState({
@@ -40,6 +37,9 @@ class Tracker extends Component {
         fireRedirect: true
       })
       console.log(err)
+    })
+    socket.on('send initiative', (payload) => {
+      console.log('initiative received', payload)
     })
   }
 
@@ -58,6 +58,7 @@ class Tracker extends Component {
     }, () => {
       socket.emit('initiative rolled', {
         player_name: this.state.character.name,
+        player_id: this.state.character.id,
         initiative: this.state.initiative
       })
     })
