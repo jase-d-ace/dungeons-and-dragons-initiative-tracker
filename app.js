@@ -67,9 +67,7 @@ io.on('connection', (socket) => {
     let sortedOrder = initiativeOrder.sort((a, b) => {
       return a.initiative < b.initiative
     });
-    console.log('current turn is', currentTurn)
     currentTurn++;
-    console.log(sortedOrder[currentTurn - 1], 'from change turn')
     socket.emit('send initiative', {
       current_player: sortedOrder[currentTurn - 1]
     })
