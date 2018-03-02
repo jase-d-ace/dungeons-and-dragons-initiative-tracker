@@ -67,7 +67,12 @@ io.on('connection', (socket) => {
     let sortedOrder = initiativeOrder.sort((a, b) => {
       return a.initiative < b.initiative
     });
-    //TODO: Find a way of walking the array without having to loop over it or have a bunch of if statements
+    console.log('current turn is', currentTurn)
+    currentTurn++;
+    console.log(sortedOrder[currentTurn - 1], 'from change turn')
+    socket.emit('send initiative', {
+      current_player: sortedOrder[currentTurn - 1]
+    })
     if (currentTurn === onlineUsers) {
       currentTurn = 0;
     }

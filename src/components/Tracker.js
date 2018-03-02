@@ -21,9 +21,6 @@ class Tracker extends Component {
   }
 
   componentDidMount() {
-    socket.on('inform', (payload) => {
-      console.log(payload)
-    })
     axios.get('/api/characters')
     .then( character => {
       this.setState({
@@ -40,6 +37,9 @@ class Tracker extends Component {
         fireRedirect: true
       })
       console.log(err)
+    })
+    socket.on('send initiative', (payload) => {
+      console.log('initiative received', payload)
     })
   }
 
