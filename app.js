@@ -60,34 +60,29 @@ io.on('connection', (socket) => {
     onlineUsers++;
     console.log(`${payload.user} has entered ${payload.room}`)
     //TODO: find something to do on connection. Feedback to player or something.
-    socket.emit('some event', {
-      testing: 'stuff'
-    });
+    console.log('online users currently: ', onlineUsers)
   });
   //socket event for changing turns
   socket.on('change turn', (payload) => {
-    if (currentTurn < onlineUsers) {
-      currentTurn++;
-      console.log(payload, 'from change turn event')
-    };
-    socket.emit('inform', {
-     current_turn: `it is currently ${payload.turn_count}'s turn`
+    let sortedOrder = initiativeOrder.sort((a, b) => {
+      return a.initiative < b.initiative
     });
+    //TODO: Find a way of walking the array without having to loop over it or have a bunch of if statements
     if (currentTurn === onlineUsers) {
-      currentTurn = 1;
+      currentTurn = 0;
     }
-    console.log(currentTurn)
   });
 
   socket.on('initiative rolled', (payload) => {
     initiativeOrder.push({
       name: payload.player_name,
+      id: payload.player_id,
       initiative: payload.initiative
     })
     let sortedOrder = initiativeOrder.sort((a, b) => {
       return a.initiative < b.initiative
-    })
-    console.log('initiative rolled', sortedOrder)
+    });
+    console.log(`initiative rolled. it is currently ${sortedOrder[0].name}'s turn'`)
   });
 
   //don't be an idiot and forget a disconnect listener
@@ -96,8 +91,9 @@ io.on('connection', (socket) => {
       onlineUsers--;
       console.log('a user has left the room')
       initiativeOrder = [];
-    };
-    console.log('no users left');
+    } else {
+      console.log('no users left')
+    }
   })
 });
 
