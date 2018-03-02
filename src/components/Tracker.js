@@ -14,6 +14,7 @@ class Tracker extends Component {
     this.state = {
       character: null,
       initiativeRolled: false,
+      activeTurn: false,
       fireRedirect: false
     }
     this.passTurn = this.passTurn.bind(this)
@@ -29,7 +30,11 @@ class Tracker extends Component {
     socket.emit('enter', {
       room: 'main room',
       user: this.state.character.name
-        })
+        });
+    socket.on('send initiative', (payload) => {
+      console.log('initiative received', payload)
+      this.defineTurn(this.state.character.id, payload.current_player.id)
+    })
       })
     })
     .catch( err => {
@@ -37,9 +42,6 @@ class Tracker extends Component {
         fireRedirect: true
       })
       console.log(err)
-    })
-    socket.on('send initiative', (payload) => {
-      console.log('initiative received', payload)
     })
   }
 
@@ -64,6 +66,18 @@ class Tracker extends Component {
     })
   }
 
+  defineTurn(playerInitiative, turn) {
+    if (playerInitiative === turn) {
+      this.setState({
+        activeTurn: true
+      })
+    } else {
+      this.setState({
+        activeTurn: false
+      })
+    }
+  }
+
   render() {
     //TODO: add logic that will eventually move the game forward.
     console.log('loaded', this.state)
@@ -73,6 +87,7 @@ class Tracker extends Component {
         <button onClick={this.passTurn}>Pass your turn</button>
       {this.state.initiativeRolled ? 'Initiative Rolled! Your battle position is set.' : <button onClick={this.rollInitiative}>Roll Initiative!</button>}
         <h1>{this.state.initiativeRolled ? 'Initiative: ' + this.state.initiative : 'Roll for initiative!!'}</h1>
+        <h1>{this.state.activeTurn ? 'Your turn! Knock em dead!!' : 'Wait your turn!'}</h1>
         {this.state.fireRedirect ? <Redirect to='/' /> : ''}
       </div>
     )
