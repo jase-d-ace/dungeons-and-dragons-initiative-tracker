@@ -58,6 +58,7 @@ class Tracker extends Component {
     }, () => {
       socket.emit('initiative rolled', {
         player_name: this.state.character.name,
+        player_id: this.state.character.id,
         initiative: this.state.initiative
       })
     })
