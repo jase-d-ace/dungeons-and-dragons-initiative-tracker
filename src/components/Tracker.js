@@ -92,7 +92,7 @@ class Tracker extends Component {
       <div className="Tracker">
       {this.state.character ? <Character {...this.state.character} /> : ''}
       {this.state.activeTurn ? <button onClick={this.passTurn}>Pass your turn</button> : ''}
-      {this.state.initiativeRolled ? 'Initiative Rolled! Your battle position is set.' : <form onSubmit={this.handleFormSubmit}> <input type='number' name='initiative' onChange={this.handleInputChange} placeholder='write your dice roll here' /> <input type='submit' value='Roll it' /></form>}
+      {this.state.initiativeRolled ? 'Initiative Rolled! Your battle position is set.' : <form onSubmit={this.handleFormSubmit}> <input type='number' name='initiative' onChange={this.handleInputChange} placeholder='write your dice roll here' min='0' max='30' /> <input type='submit' value='Roll it' /></form>}
         <h1>{this.state.initiativeRolled ? 'Initiative: ' + this.state.initiative : 'Roll for initiative!!'}</h1>
         <h1>{this.state.activeTurn ? 'Your turn! Knock em dead!!' : 'Wait your turn!'}</h1>
         {this.state.fireRedirect ? <Redirect to='/' /> : ''}
