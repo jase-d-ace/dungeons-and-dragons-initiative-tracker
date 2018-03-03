@@ -12,7 +12,6 @@ class CharacterController {
       })
     })
     .catch( err => {
-      console.log('noooo', err)
       res.status(500).json(err)
     })
   }
