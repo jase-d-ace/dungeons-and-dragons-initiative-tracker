@@ -50,7 +50,7 @@ app.get('*', (req, res) => {
 
 
 let onlineUsers = 0;
-let currentTurn = 0;
+let currentTurn = 1;
 let initiativeOrder = [];
 
 //set default transport protocol to websocket instead of http polling
@@ -67,6 +67,7 @@ io.on('connection', (socket) => {
     let sortedOrder = initiativeOrder.sort((a, b) => {
       return a.initiative < b.initiative
     });
+    console.log('here is the new order', sortedOrder)
     console.log('turn changin', currentTurn)
     currentTurn++;
     io.emit('send initiative', {
