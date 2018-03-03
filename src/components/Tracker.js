@@ -34,7 +34,7 @@ class Tracker extends Component {
     socket.on('send initiative', (payload) => {
       console.log('initiative received', payload)
       this.defineTurn(this.state.character.id, payload.current_player.id)
-    })
+        })
       })
     })
     .catch( err => {
@@ -84,7 +84,7 @@ class Tracker extends Component {
     return (
       <div className="Tracker">
       {this.state.character ? <Character {...this.state.character} /> : ''}
-        <button onClick={this.passTurn}>Pass your turn</button>
+      {this.state.activeTurn ? <button onClick={this.passTurn}>Pass your turn</button> : ''}
       {this.state.initiativeRolled ? 'Initiative Rolled! Your battle position is set.' : <button onClick={this.rollInitiative}>Roll Initiative!</button>}
         <h1>{this.state.initiativeRolled ? 'Initiative: ' + this.state.initiative : 'Roll for initiative!!'}</h1>
         <h1>{this.state.activeTurn ? 'Your turn! Knock em dead!!' : 'Wait your turn!'}</h1>
