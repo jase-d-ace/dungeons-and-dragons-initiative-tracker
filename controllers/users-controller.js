@@ -10,8 +10,7 @@ class UsersController {
       name: req.body.name,
       password_digest: hash
     })
-    .then( user =>{
-      console.log('user is live', user);
+    .then( user => {
       res.json({
         message: 'we\'re good, buddy!',
         user
