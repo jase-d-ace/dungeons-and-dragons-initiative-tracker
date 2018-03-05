@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 
-class Login extends Component {
+class AdminRegister extends Component {
 
   constructor() {
     super();
@@ -27,39 +27,36 @@ class Login extends Component {
     e.preventDefault();
     axios({
       method: 'POST',
-      url: '/auth/player/login',
+      url: '/auth/admin/register',
       data: {
         name: this.state.name,
         password: this.state.password
       }
     })
-    .then( data => {
+    .then( admin => {
       this.setState({
         fireRedirect: true
-      });
+      })
     })
     .catch( err => {
-      console.log('we messed up', err)
-    });
-    e.target.reset();
+      console.log('noooo', err);
+    })
   };
 
   render() {
-    console.log('loaded', this.state)
     return (
-      <div className='Login'>
-        <h1>Login to get rolling!</h1>
+      <div className='AdminRegister'>
+        <h1>Welcome, DM. Tell us your story</h1>
         <form onSubmit={this.handleFormSubmit}>
-          <input type='text' onChange={this.handleInputChange} name='name' placeholder='your name here' />
-          <input type='password' onChange={this.handleInputChange} name='password' placeholder='your password here' />
-          <input type='submit' value='let us do it done' />
+          <input type='text' name='name' onChange={this.handleInputChange} placeholder='write your name here' />
+          <input type='password' name='password' onChange={this.handleInputChange} placeholder='write your password here' />
+          <input type='submit' value='start torturing your players' />
         </form>
-        <Link to='/signup'>Register instead?</Link>
-        <Link to='/admin'>Log in as DM instead?</Link>
-      { this.state.fireRedirect ? <Redirect to='/tracker' /> : '' }
+        {this.state.fireRedirect ? <Redirect to='/admin/tracker' /> : ''}
       </div>
-    );
-  };
+    )
+  }
+
 };
 
-export default Login;
+export default AdminRegister

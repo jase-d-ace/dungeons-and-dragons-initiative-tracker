@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 
-class Login extends Component {
+class Admin extends Component {
 
   constructor() {
     super();
@@ -18,48 +18,48 @@ class Login extends Component {
   handleInputChange(e) {
     let name = e.target.name;
     let value = e.target.value;
+
     this.setState({
       [name]: value
-    });
-  };
+    })
+  }
 
   handleFormSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
     axios({
       method: 'POST',
-      url: '/auth/player/login',
+      url: '/auth/admin/login',
       data: {
         name: this.state.name,
         password: this.state.password
       }
     })
-    .then( data => {
+    .then( admin => {
       this.setState({
         fireRedirect: true
-      });
+      })
     })
     .catch( err => {
-      console.log('we messed up', err)
-    });
+      console.log('nooo', err)
+    })
     e.target.reset();
-  };
+  }
 
   render() {
-    console.log('loaded', this.state)
-    return (
-      <div className='Login'>
-        <h1>Login to get rolling!</h1>
+    return(
+      <div className='Admin'>
+        <h1>Welcome, DM</h1>
         <form onSubmit={this.handleFormSubmit}>
-          <input type='text' onChange={this.handleInputChange} name='name' placeholder='your name here' />
-          <input type='password' onChange={this.handleInputChange} name='password' placeholder='your password here' />
-          <input type='submit' value='let us do it done' />
+          <input type='text' name='name' placeholder='write your name' onChange={this.handleInputChange} />
+          <input type='password' name='password' placeholder='password' onChange={this.handleInputChange} />
+          <input type='submit' value='submit your players to torture' />
         </form>
-        <Link to='/signup'>Register instead?</Link>
-        <Link to='/admin'>Log in as DM instead?</Link>
-      { this.state.fireRedirect ? <Redirect to='/tracker' /> : '' }
+        <Link to='/admin/register'>Register and submit your players to torture</Link>
+        {this.state.fireRedirect ? <Redirect to='/admin/tracker' /> : ''}
       </div>
-    );
+    )
   };
+
 };
 
-export default Login;
+export default Admin
