@@ -13,7 +13,7 @@ const options = {
 
 init();
 
-passport.use(
+passport.use('player',
   new LocalStrategy(options, (name, password, done) => {
     User.findByName(name)
     .then( user => {
