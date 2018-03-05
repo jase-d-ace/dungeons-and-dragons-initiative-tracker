@@ -89,7 +89,8 @@ io.on('connection', (socket) => {
     });
     console.log('sending initiative to...', sortedOrder[0].name)
     io.emit('send initiative', {
-      current_player: sortedOrder[0]
+      current_player: sortedOrder[0],
+      sortedOrder
     })
   });
 

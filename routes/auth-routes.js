@@ -5,13 +5,14 @@ const passport = require('../services/local');
 const authClass = require('../services/auth-helpers');
 const AuthHelpers = new authClass;
 const adminClass = require('../controllers/admin-controller');
+const adminPassport = require('../services/admin/local-admin')
 const adminController = new adminClass;
 
 router.post('/player/login', passport.authenticate('player'), (req, res) => {
   res.redirect('/');
 });
 
-router.post('/admin/login', passport.authenticate('admin'), (req, res) => {
+router.post('/admin/login', adminPassport.authenticate('admin'), (req, res) => {
   res.redirect('/');
 });
 
