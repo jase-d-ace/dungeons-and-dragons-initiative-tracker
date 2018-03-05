@@ -1,5 +1,5 @@
 const passport = require('passport');
-const adminClass = require('../models/admin');
+const adminClass = require('../../models/admin');
 const Admin = new adminClass;
 
 module.exports = () => {
