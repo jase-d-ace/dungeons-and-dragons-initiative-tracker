@@ -27,7 +27,7 @@ class AdminTracker extends Component {
       this.setState({
         initiativeOrder: payload.sortedOrder
       }, () => {
-        this.defineTurn(payload.current_player.id)
+        this.defineTurn(parseInt(payload.current_player.id))
       })
     })
   }
@@ -71,7 +71,13 @@ class AdminTracker extends Component {
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
-      [name]: parseInt(value)
+      [name]: value
+    })
+  }
+
+  passTurn() {
+    socket.emit('change turn', {
+      turn_count: 'monster'
     })
   }
 
@@ -84,7 +90,7 @@ class AdminTracker extends Component {
           <input type='number' min='0' max='30' onChange={this.handleInputChange} name='initiative' />
           <input type='submit' value='add to initiative' />
         </form>
-        {this.state.activeTurn ? <button onClick={this.passTurn}>Pass Your Turn</button> : ''}
+        {this.state.activeTurn ? <button onClick={this.passTurn}>Pass Your Turn</button> : 'Player turn. Let them do their thing.'}
         <ul>
           {this.renderInitiative()}
         </ul>
