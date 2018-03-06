@@ -1,30 +1,96 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-const socket = io()
+import axios from 'axios';
+import { Redirect } from 'react-router-dom'
+const socket = io({ transports: ['websocket'], upgrade: false })
+
 class AdminTracker extends Component {
 
   constructor() {
     super();
     this.state = {
-      initiativeOrder: null
+      initiativeOrder: null,
+      activeTurn: false,
+      monster: '',
+      initiative: ''
     }
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   componentDidMount() {
-    socket.emit('enter')
+    socket.emit('enter', {
+      room: 'main room',
+      user: 'the dm'
+    })
     socket.on('send initiative', (payload) => {
       this.setState({
         initiativeOrder: payload.sortedOrder
+      }, () => {
+        this.defineTurn(payload.current_player.id)
       })
+    })
+  }
+
+  renderInitiative() {
+    if(this.state.initiativeOrder) {
+      return this.state.initiativeOrder.map( el => {
+        return (
+          <li> {el.name} initiative: {el.initiative}</li>
+        )
+      })
+    } else {
+      return(
+        <h1>Wait for initiatives</h1>
+      )
+    }
+  }
+
+  handleFormSubmit(e) {
+    e.preventDefault();
+    socket.emit('initiative rolled', {
+      player_name: this.state.monster,
+      player_id: 0,
+      initiative: this.state.initiative
+    })
+  }
+
+  defineTurn(playerInitiative) {
+    if (playerInitiative === 0) {
+      this.setState({
+        activeTurn: true
+      })
+    } else {
+      this.setState({
+        activeTurn: false
+      })
+    }
+  }
+
+  handleInputChange(e) {
+    let name = e.target.name;
+    let value = e.target.value;
+    this.setState({
+      [name]: parseInt(value)
     })
   }
 
   render() {
     console.log('loaded', this.state)
     return(
-      <h1>Admin path is live!</h1>
+      <div className='AdminTracker'>
+        <form onSubmit={this.handleFormSubmit}>
+          <input type='text' name='monster' onChange={this.handleInputChange} placeholder='add a monster name' />
+          <input type='number' min='0' max='30' onChange={this.handleInputChange} name='initiative' />
+          <input type='submit' value='add to initiative' />
+        </form>
+        {this.state.activeTurn ? <button onClick={this.passTurn}>Pass Your Turn</button> : ''}
+        <ul>
+          {this.renderInitiative()}
+        </ul>
+      </div>
     )
   }
 }
 
-export default AdminTracker
+export default AdminTracker;
