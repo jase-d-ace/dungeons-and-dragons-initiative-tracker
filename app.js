@@ -71,9 +71,10 @@ io.on('connection', (socket) => {
     console.log('turn changin', currentTurn)
     currentTurn++;
     io.emit('send initiative', {
-      current_player: sortedOrder[currentTurn - 1]
+      current_player: sortedOrder[currentTurn - 1],
+      sortedOrder
     })
-    if (currentTurn === onlineUsers) {
+    if (currentTurn === sortedOrder.length) {
       currentTurn = 0;
     }
   });
@@ -97,12 +98,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', (payload) => {
     if (onlineUsers > 0) {
       onlineUsers--;
-      initiativeOrder = [];
-      console.log('user has gone')
+      console.log('someone left');
     } else {
       console.log('no one home')
-    }
-  })
+    };
+  });
 });
 
 http.listen(PORT, () => {

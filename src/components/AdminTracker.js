@@ -19,11 +19,13 @@ class AdminTracker extends Component {
   }
 
   componentDidMount() {
+    console.log('mounted')
     socket.emit('enter', {
       room: 'main room',
       user: 'the dm'
     })
     socket.on('send initiative', (payload) => {
+      console.log('initiative rolled again')
       this.setState({
         initiativeOrder: payload.sortedOrder
       }, () => {
@@ -36,7 +38,7 @@ class AdminTracker extends Component {
     if(this.state.initiativeOrder) {
       return this.state.initiativeOrder.map( el => {
         return (
-          <li> {el.name} initiative: {el.initiative}</li>
+          <li key={e.id}> {el.name} initiative: {el.initiative}</li>
         )
       })
     } else {
@@ -51,7 +53,7 @@ class AdminTracker extends Component {
     socket.emit('initiative rolled', {
       player_name: this.state.monster,
       player_id: 0,
-      initiative: this.state.initiative
+      initiative: parseInt(this.state.initiative)
     })
   }
 
@@ -82,7 +84,6 @@ class AdminTracker extends Component {
   }
 
   render() {
-    console.log('loaded', this.state)
     return(
       <div className='AdminTracker'>
         <form onSubmit={this.handleFormSubmit}>
