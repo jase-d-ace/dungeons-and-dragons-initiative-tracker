@@ -27,7 +27,7 @@ class Register extends Component {
     e.preventDefault();
     axios({
       method:'POST',
-      url: '/auth/register',
+      url: '/auth/player/register',
       data: {
         name: this.state.name,
         password: this.state.password
@@ -54,6 +54,7 @@ class Register extends Component {
           <input type='text' onChange={this.handleInputChange} name='password' placeholder='your password here' />
           <input type='submit' value='lets get started' />
         </form>
+      { this.state.fireRedirect ? <Redirect to='/' /> : '' }
       </div>
     )
   }
