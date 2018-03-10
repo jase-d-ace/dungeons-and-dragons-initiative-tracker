@@ -1,4 +1,4 @@
-\c dnd_auth_db
+-- \c dnd_auth_db
 
 -- DROP TABLE IF EXISTS users CASCADE;
 -- DROP TABLE IF EXISTS characters;
