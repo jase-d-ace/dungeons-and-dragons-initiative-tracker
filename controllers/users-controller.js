@@ -17,7 +17,6 @@ class UsersController {
       });
     })
     .catch( err => {
-      console.log('user is NOT live', err);
       res.status(500).json({
         message: 'nooooo',
         err

@@ -34,7 +34,6 @@ class Register extends Component {
       }
     })
     .then( user => {
-      console.log(user);
       this.setState({
         fireRedirect: true
       })
@@ -45,13 +44,12 @@ class Register extends Component {
   }
 
   render() {
-    console.log('loaded', this.state)
     return(
       <div className='Register'>
         <h1>So ye want to play some dnd, eh?</h1>
         <form onSubmit={this.handleFormSubmit}>
           <input type='text' onChange={this.handleInputChange} name='name' placeholder='your name here' />
-          <input type='text' onChange={this.handleInputChange} name='password' placeholder='your password here' />
+          <input type='password' onChange={this.handleInputChange} name='password' placeholder='your password here' />
           <input type='submit' value='lets get started' />
         </form>
       { this.state.fireRedirect ? <Redirect to='/' /> : '' }

@@ -45,7 +45,6 @@ class Login extends Component {
   };
 
   render() {
-    console.log('loaded', this.state)
     return (
       <div className='Login'>
         <h1>Login to get rolling!</h1>

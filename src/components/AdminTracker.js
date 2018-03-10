@@ -19,7 +19,6 @@ class AdminTracker extends Component {
   }
 
   componentDidMount() {
-    console.log('mounted')
     socket.emit('enter', {
       room: 'main room',
       user: 'the dm'

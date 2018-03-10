@@ -60,15 +60,12 @@ io.on('connection', (socket) => {
 
   socket.on('enter', (payload) => {
     onlineUsers++;
-    console.log('online users', onlineUsers)
   });
 
   socket.on('change turn', (payload) => {
     let sortedOrder = initiativeOrder.sort((a, b) => {
       return a.initiative < b.initiative
     });
-    console.log('here is the new order', sortedOrder)
-    console.log('turn changin', currentTurn)
     currentTurn++;
     io.emit('send initiative', {
       current_player: sortedOrder[currentTurn - 1],
@@ -88,7 +85,6 @@ io.on('connection', (socket) => {
     let sortedOrder = initiativeOrder.sort((a, b) => {
       return a.initiative < b.initiative
     });
-    console.log('sending initiative to...', sortedOrder[0].name)
     io.emit('send initiative', {
       current_player: sortedOrder[0],
       sortedOrder
@@ -98,7 +94,6 @@ io.on('connection', (socket) => {
   socket.on('disconnect', (payload) => {
     if (onlineUsers > 0) {
       onlineUsers--;
-      console.log('someone left');
     } else {
       console.log('no one home')
     };
