@@ -29,7 +29,7 @@ class Login extends Component {
       method: 'POST',
       url: '/auth/player/login',
       data: {
-        name: this.state.name.toLowercase(),
+        name: this.state.name.toLowerCase(),
         password: this.state.password
       }
     })
