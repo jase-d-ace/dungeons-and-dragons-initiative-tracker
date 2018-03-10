@@ -24,7 +24,6 @@ class AdminTracker extends Component {
       user: 'the dm'
     })
     socket.on('send initiative', (payload) => {
-      console.log('initiative rolled again')
       this.setState({
         initiativeOrder: payload.sortedOrder
       }, () => {
@@ -37,7 +36,7 @@ class AdminTracker extends Component {
     if(this.state.initiativeOrder) {
       return this.state.initiativeOrder.map( el => {
         return (
-          <li key={e.id}> {el.name} initiative: {el.initiative}</li>
+          <li key={el.id}> {el.name} initiative: {el.initiative}</li>
         )
       })
     } else {
