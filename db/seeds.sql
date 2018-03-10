@@ -32,9 +32,6 @@ CREATE TABLE IF NOT EXISTS admins(
   password_digest VARCHAR(255) NOT NULL
   )
 
--- TODO: find a way of segmenting what prem sees vs what we see as players
-
-
 -- INSERT INTO characters(name, race, class, ac, health, str_mod, dex_mod, con_mod, int_mod, wis_mod, cha_mod, proficiency, user_id) VALUES
 -- ('sylvan', 'wood elf', 'monk', '16', '45', '+0', '+4', '+1', '+1', '+2', '-1', '+3', 1)
 -- ('ranathar', 'drow', 'rogue', '14', '32', '+1', '+4', '+0', '+1', '-1', '+2', '+3', 2)
