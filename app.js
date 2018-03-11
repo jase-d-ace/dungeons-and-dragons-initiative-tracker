@@ -53,6 +53,9 @@ let onlineUsers = 0;
 let currentTurn = 1;
 let initiativeOrder = [];
 
+const sortInitiative = arr => {
+  return arr.sort((a, b) => a.initiative < b.initiative)
+}
 //set default transport protocol to websocket instead of http polling
 io.set('transports', ['websocket']);
 
@@ -63,15 +66,12 @@ io.on('connection', (socket) => {
   });
 
   socket.on('change turn', (payload) => {
-    let sortedOrder = initiativeOrder.sort((a, b) => {
-      return a.initiative < b.initiative
-    });
     currentTurn++;
     io.emit('send initiative', {
       current_player: sortedOrder[currentTurn - 1],
-      sortedOrder
+      sortedOrder: sortInitiative(initiativeOrder)
     })
-    if (currentTurn === sortedOrder.length) {
+    if (currentTurn === initiativeOrder.length) {
       currentTurn = 0;
     }
   });
@@ -82,12 +82,10 @@ io.on('connection', (socket) => {
       id: payload.player_id,
       initiative: payload.initiative
     });
-    let sortedOrder = initiativeOrder.sort((a, b) => {
-      return a.initiative < b.initiative
-    });
+    console.log('your initiative list is...', sortInitiative(initiativeOrder))
     io.emit('send initiative', {
       current_player: sortedOrder[0],
-      sortedOrder
+      sortedOrder: sortInitiative(initiativeOrder)
     })
   });
 
