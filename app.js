@@ -56,7 +56,10 @@ let initiativeOrder = [];
 const sortInitiative = arr => {
   return arr.sort((a, b) => a.initiative < b.initiative)
 }
-
+/*
+ * TODO: write logic that mutates the initiative order to reflect changes in the sorted order
+ * TODO: write logic that will mutate the global sorted order so that it reflects that a monster has been removed.
+*/
 //set default transport protocol to websocket instead of http polling
 io.set('transports', ['websocket']);
 
@@ -70,7 +73,7 @@ io.on('connection', (socket) => {
   socket.on('change turn', (payload) => {
     currentTurn++;
     io.emit('send initiative', {
-      current_player: sortedOrder[currentTurn - 1],
+      current_player: sortInitiative(initiativeOrder)[currentTurn - 1],
       sortedOrder: sortInitiative(initiativeOrder)
     })
     if (currentTurn === initiativeOrder.length) {
@@ -79,12 +82,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('monster destroyed', (payload) => {
-    // console.log('need an array, so...', payload.foo.name)
     let {name, initiative, ...rest} = payload
     let sortedOrder = sortInitiative(initiativeOrder);
     let index = sortedOrder.findIndex(monster => monster.name === name);
-    let spliceVal = sortedOrder.splice(index, 0);
-    console.log(sortedOrder)
+    let spliceVal = sortedOrder.splice(index, 1);
+    initiativeOrder = sortedOrder
+    io.emit('send initiative', {
+      current_player: sortInitiative(initiativeOrder)[currentTurn -1],
+      sortedOrder: sortInitiative(initiativeOrder)
+    })
   })
 
   socket.on('initiative rolled', (payload) => {
