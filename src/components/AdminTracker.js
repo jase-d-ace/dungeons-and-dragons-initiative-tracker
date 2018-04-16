@@ -16,6 +16,7 @@ class AdminTracker extends Component {
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.killMonster = this.killMonster.bind(this)
   }
 
   componentDidMount() {
@@ -36,7 +37,9 @@ class AdminTracker extends Component {
     if(this.state.initiativeOrder) {
       return this.state.initiativeOrder.map( el => {
         return (
-          <li key={el.id}> {el.name} initiative: {el.initiative}</li>
+          <li key={el.id}>
+            {el.name} initiative: {el.initiative} <button onClick={() => this.killMonster(el)}>Kill this monster?</button>
+          </li>
         )
       })
     } else {
@@ -72,6 +75,12 @@ class AdminTracker extends Component {
     let value = e.target.value;
     this.setState({
       [name]: value
+    })
+  }
+
+  killMonster(monster) {
+    socket.emit('monster destroyed', {
+      ...monster
     })
   }
 
