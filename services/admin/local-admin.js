@@ -27,7 +27,6 @@ passport.use('admin',
       };
     })
     .catch( err => {
-      console.log('messed up in local-admin');
       return done(err)
     });
   })

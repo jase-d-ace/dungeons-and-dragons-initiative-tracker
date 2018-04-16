@@ -53,31 +53,45 @@ let onlineUsers = 0;
 let currentTurn = 1;
 let initiativeOrder = [];
 
+const sortInitiative = arr => {
+  return arr.sort((a, b) => a.initiative < b.initiative)
+}
+/*
+ * TODO: write logic that mutates the initiative order to reflect changes in the sorted order
+ * TODO: write logic that will mutate the global sorted order so that it reflects that a monster has been removed.
+*/
 //set default transport protocol to websocket instead of http polling
 io.set('transports', ['websocket']);
 
+//open socket connection server
 io.on('connection', (socket) => {
-
+  //begin tracking socket connections
   socket.on('enter', (payload) => {
     onlineUsers++;
-    console.log('online users', onlineUsers)
   });
 
   socket.on('change turn', (payload) => {
-    let sortedOrder = initiativeOrder.sort((a, b) => {
-      return a.initiative < b.initiative
-    });
-    console.log('here is the new order', sortedOrder)
-    console.log('turn changin', currentTurn)
     currentTurn++;
     io.emit('send initiative', {
-      current_player: sortedOrder[currentTurn - 1],
-      sortedOrder
+      current_player: sortInitiative(initiativeOrder)[currentTurn - 1],
+      sortedOrder: sortInitiative(initiativeOrder)
     })
-    if (currentTurn === sortedOrder.length) {
+    if (currentTurn === initiativeOrder.length) {
       currentTurn = 0;
     }
   });
+
+  socket.on('monster destroyed', (payload) => {
+    let {name, initiative, ...rest} = payload
+    let sortedOrder = sortInitiative(initiativeOrder);
+    let index = sortedOrder.findIndex(monster => monster.name === name);
+    let spliceVal = sortedOrder.splice(index, 1);
+    initiativeOrder = sortedOrder
+    io.emit('send initiative', {
+      current_player: sortInitiative(initiativeOrder)[currentTurn -1],
+      sortedOrder: sortInitiative(initiativeOrder)
+    })
+  })
 
   socket.on('initiative rolled', (payload) => {
     initiativeOrder.push({
@@ -85,20 +99,16 @@ io.on('connection', (socket) => {
       id: payload.player_id,
       initiative: payload.initiative
     });
-    let sortedOrder = initiativeOrder.sort((a, b) => {
-      return a.initiative < b.initiative
-    });
-    console.log('sending initiative to...', sortedOrder[0].name)
+    console.log('new initiative order', sortInitiative(initiativeOrder))
     io.emit('send initiative', {
-      current_player: sortedOrder[0],
-      sortedOrder
+      current_player: sortInitiative(initiativeOrder)[0],
+      sortedOrder: sortInitiative(initiativeOrder)
     })
   });
 
   socket.on('disconnect', (payload) => {
     if (onlineUsers > 0) {
       onlineUsers--;
-      console.log('someone left');
     } else {
       console.log('no one home')
     };

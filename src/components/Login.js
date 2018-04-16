@@ -29,7 +29,7 @@ class Login extends Component {
       method: 'POST',
       url: '/auth/player/login',
       data: {
-        name: this.state.name,
+        name: this.state.name.toLowerCase(),
         password: this.state.password
       }
     })
@@ -45,7 +45,6 @@ class Login extends Component {
   };
 
   render() {
-    console.log('loaded', this.state)
     return (
       <div className='Login'>
         <h1>Login to get rolling!</h1>

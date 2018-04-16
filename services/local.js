@@ -27,7 +27,6 @@ passport.use('player',
       };
     })
     .catch( err => {
-      console.log('messed up in local', err);
       return done(err);
     });
   })

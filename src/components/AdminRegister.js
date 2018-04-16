@@ -29,7 +29,7 @@ class AdminRegister extends Component {
       method: 'POST',
       url: '/auth/admin/register',
       data: {
-        name: this.state.name,
+        name: this.state.name.toLowerCase(),
         password: this.state.password
       }
     })
