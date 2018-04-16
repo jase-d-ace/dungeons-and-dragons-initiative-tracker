@@ -7,9 +7,9 @@ comes up.
 
 ## Technologies Used
 * Node.js (Express MVC framework)
-* Socket.io
-* React
-* Webpack 3
+* Socket.io (Real-Time user-user connection)
+* React (Quick and responsive front-end)
+* Webpack 3 (Build Tool/Javascript Compiler)
 
 ## Currently Available Features
 
