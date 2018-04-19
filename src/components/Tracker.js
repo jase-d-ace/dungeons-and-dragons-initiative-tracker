@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom'
 import Character from './Character';
+import '../styles/main.css'
 //found the fix for the refresh bug here:
 //https://stackoverflow.com/questions/41924713/node-js-socket-io-page-refresh-multiple-connections
 const socket = io({ transports: ['websocket'], upgrade: false });
@@ -87,7 +88,6 @@ class Tracker extends Component {
   }
 
   render() {
-    //TODO: add logic that will eventually move the game forward.
     return (
       <div className="Tracker">
       {this.state.character ? <Character {...this.state.character} /> : ''}
