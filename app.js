@@ -124,11 +124,21 @@ io.on('connection', (socket) => {
     let sortedOrder = sortInitiative(initiativeOrder);
     let index = sortedOrder.findIndex(monster => monster.name === name);
     let spliceVal = sortedOrder.splice(index, 1);
-    initiativeOrder = sortedOrder
-    io.emit('send initiative', {
-      current_player: sortInitiative(initiativeOrder)[currentTurn - 1],
-      sortedOrder: sortInitiative(initiativeOrder)
-    })
+    initiativeOrder = sortedOrder;
+    if (initiativeOrder.length) {
+      io.emit('send initiative', {
+        current_player: sortInitiative(initiativeOrder)[currentTurn - 1],
+        sortedOrder: sortInitiative(initiativeOrder)
+      });
+    } else {
+      io.emit('end battle');
+    };
+  });
+
+  socket.on('end battle', () => {
+    initiativeOrder = [];
+    currentTurn = 0;
+    io.emit('end battle')
   })
 
   //socket event that constructs an initiative order based on initiatives passed from react.
