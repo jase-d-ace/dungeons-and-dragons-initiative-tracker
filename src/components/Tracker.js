@@ -16,7 +16,9 @@ class Tracker extends Component {
       character: null,
       initiativeRolled: false,
       activeTurn: false,
-      fireRedirect: false
+      fireRedirect: false,
+      battleOver: false,
+      battleOverMessage: 'Congratulations! You Won!'
     }
     this.passTurn = this.passTurn.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -43,6 +45,12 @@ class Tracker extends Component {
         fireRedirect: true
       })
       console.log(err)
+    })
+    socket.on('end battle', (payload) => {
+      this.setState({
+        activeTurn: false,
+        battleOver: true
+      })
     })
   }
 
@@ -92,10 +100,11 @@ class Tracker extends Component {
       <div className="Tracker">
       {this.state.character ? <Character {...this.state.character} /> : ''}
       {this.state.activeTurn ? <button onClick={this.passTurn}>Pass your turn</button> : ''}
-      {this.state.initiativeRolled ? 'Initiative Rolled! Your battle position is set.' : <form onSubmit={this.handleFormSubmit}> <input type='number' name='initiative' onChange={this.handleInputChange} placeholder='write your dice roll here' min='0' max='30' required /> <input type='submit' value='Roll it' /></form>}
+      {this.state.initiativeRolled ? '' : <form onSubmit={this.handleFormSubmit}> <input type='number' name='initiative' onChange={this.handleInputChange} placeholder='write your dice roll here' min='0' max='30' required /> <input type='submit' value='Roll it' /></form>}
         <h1>{this.state.initiativeRolled ? 'Initiative: ' + this.state.initiative : 'Roll for initiative!!'}</h1>
         <h1>{this.state.activeTurn ? 'Your turn! Knock em dead!!' : 'Wait your turn!'}</h1>
         {this.state.fireRedirect ? <Redirect to='/' /> : ''}
+        {this.state.battleOver ? (<h1>{this.state.battleOverMessage}</h1>) : ''}
       </div>
     )
   }

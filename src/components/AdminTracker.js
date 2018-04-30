@@ -16,22 +16,28 @@ class AdminTracker extends Component {
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.killMonster = this.killMonster.bind(this)
+    this.killMonster = this.killMonster.bind(this);
+    this.endBattle = this.endBattle.bind(this);
   }
 
   componentDidMount() {
     socket.emit('enter', {
       room: 'main room',
       user: 'the dm'
-    })
+    });
     socket.on('send initiative', (payload) => {
       this.setState({
         initiativeOrder: payload.sortedOrder
       }, () => {
         this.defineTurn(parseInt(payload.current_player.id))
-      })
-    })
-  }
+      });
+    });
+    socket.on('end battle', (payload) => {
+      this.setState({
+        initiativeOrder: null
+      });
+    });
+  };
 
   renderInitiative() {
     if(this.state.initiativeOrder) {
@@ -90,6 +96,10 @@ class AdminTracker extends Component {
     })
   }
 
+  endBattle() {
+    socket.emit('end battle');
+  }
+
   render() {
     return(
       <div className='AdminTracker'>
@@ -102,6 +112,7 @@ class AdminTracker extends Component {
         <ul>
           {this.renderInitiative()}
         </ul>
+        <button onClick={this.endBattle}>End the battle?</button>
       </div>
     )
   }
