@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
+import '../styles/main.css'
 
 class Login extends Component {
 
@@ -48,10 +49,10 @@ class Login extends Component {
     return (
       <div className='Login'>
         <h1>Login to get rolling!</h1>
-        <form onSubmit={this.handleFormSubmit}>
-          <input type='text' onChange={this.handleInputChange} name='name' placeholder='your name here' />
-          <input type='password' onChange={this.handleInputChange} name='password' placeholder='your password here' />
-          <input type='submit' value='let us do it done' />
+        <form onSubmit={this.handleFormSubmit} className='form-container'>
+          <input type='text' className='input-field' onChange={this.handleInputChange} name='name' placeholder='name' />
+          <input type='password' className='input-field' onChange={this.handleInputChange} name='password' placeholder='password' />
+          <input type='submit' className='input-field submit-button' value='let us do it' />
         </form>
         <Link to='/signup'>Register instead?</Link>
         <Link to='/admin'>Log in as DM instead?</Link>

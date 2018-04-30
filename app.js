@@ -1,3 +1,6 @@
+// ========================
+// dependencies
+// ========================
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
@@ -11,6 +14,11 @@ const http = require('http').Server(app);
 const io = socket(http);
 const PORT = process.env.PORT || 3000;
 
+
+
+// ========================
+// configure middleware
+// ========================
 require('dotenv').config();
 
 app.use(morgan('dev'));
@@ -36,6 +44,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+
+// ========================
+// routes
+// ========================
 app.use('/auth', require('./routes/auth-routes'));
 app.use('/api/characters', require('./routes/character-routes'));
 
@@ -49,26 +61,41 @@ app.get('*', (req, res) => {
 });
 
 
+
+// ========================
+// global variables and helper function
+// ========================
 let onlineUsers = 0;
 let currentTurn = 1;
 let initiativeOrder = [];
 
+// helper function that sorts the initiative order array
 const sortInitiative = arr => {
   return arr.sort((a, b) => a.initiative < b.initiative)
 }
-/*
- * TODO: write logic that mutates the initiative order to reflect changes in the sorted order
- * TODO: write logic that will mutate the global sorted order so that it reflects that a monster has been removed.
-*/
 //set default transport protocol to websocket instead of http polling
 io.set('transports', ['websocket']);
 
-//open socket connection server
+
+
+
+// ========================
+// socket server
+// ========================
 io.on('connection', (socket) => {
   //begin tracking socket connections
   socket.on('enter', (payload) => {
     onlineUsers++;
   });
+
+  //socket event called when a player is done with their turn
+
+  /*
+    * turn counter is incremented to reflect turn change
+    * this is used as a comparison value against the sorted array so that the counter can reset to the top of the order
+    * send initiative event is sent to the entire room to allow react to decide whose turn it is based on the id passed from this event
+    * if the turn counter hits the end of the array, go back to the beginning ad start over
+  */
 
   socket.on('change turn', (payload) => {
     currentTurn++;
@@ -81,17 +108,48 @@ io.on('connection', (socket) => {
     }
   });
 
+  //socket event called when a DM removes a monster from the initiative order
+
+  /*
+    * payload of this event is the monster information from react.
+    * destructure that payload and take only the name from it
+    * sort array based on initiative
+    * find the index of the monster by matching its name to any of the names inside the SORTED array
+    * remove that monster from the sorted array
+    * reset the global initiative order variable to the new array without the destroyed monster
+    * send the new order to react and continue the flow of the game
+  */
   socket.on('monster destroyed', (payload) => {
-    let {name, initiative, ...rest} = payload
+    let {name, ...rest} = payload
     let sortedOrder = sortInitiative(initiativeOrder);
     let index = sortedOrder.findIndex(monster => monster.name === name);
     let spliceVal = sortedOrder.splice(index, 1);
-    initiativeOrder = sortedOrder
-    io.emit('send initiative', {
-      current_player: sortInitiative(initiativeOrder)[currentTurn -1],
-      sortedOrder: sortInitiative(initiativeOrder)
-    })
+    initiativeOrder = sortedOrder;
+    if (initiativeOrder.length) {
+      io.emit('send initiative', {
+        current_player: sortInitiative(initiativeOrder)[currentTurn - 1],
+        sortedOrder: sortInitiative(initiativeOrder)
+      });
+    } else {
+      io.emit('end battle');
+    };
+  });
+
+  socket.on('end battle', () => {
+    initiativeOrder = [];
+    currentTurn = 0;
+    io.emit('end battle')
   })
+
+  //socket event that constructs an initiative order based on initiatives passed from react.
+
+  /*
+   * payload of this event is the player information from react
+   * that information is pushed into the global initiative array variable as an object
+   * that array is then sorted using the helper function sortInitiative
+   * the sorted array is then sent to react
+   * initially, the current_player payload was set to send the first element every time. now it sends the current player
+  */
 
   socket.on('initiative rolled', (payload) => {
     initiativeOrder.push({
@@ -99,9 +157,8 @@ io.on('connection', (socket) => {
       id: payload.player_id,
       initiative: payload.initiative
     });
-    console.log('new initiative order', sortInitiative(initiativeOrder))
     io.emit('send initiative', {
-      current_player: sortInitiative(initiativeOrder)[0],
+      current_player: sortInitiative(initiativeOrder)[currentTurn - 1],
       sortedOrder: sortInitiative(initiativeOrder)
     })
   });
@@ -114,6 +171,11 @@ io.on('connection', (socket) => {
     };
   });
 });
+
+// ========================
+// end of socket server
+// ========================
+
 
 http.listen(PORT, () => {
   console.log(`liveonport${PORT}`);
