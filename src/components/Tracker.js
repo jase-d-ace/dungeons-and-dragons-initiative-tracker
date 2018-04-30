@@ -49,6 +49,7 @@ class Tracker extends Component {
     socket.on('end battle', (payload) => {
       this.setState({
         activeTurn: false,
+        initiativeRolled: false,
         battleOver: true
       })
     })
