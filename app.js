@@ -137,7 +137,7 @@ io.on('connection', (socket) => {
 
   socket.on('end battle', () => {
     initiativeOrder = [];
-    currentTurn = 0;
+    currentTurn = 1;
     io.emit('end battle')
   })
 
