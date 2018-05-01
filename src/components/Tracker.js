@@ -68,6 +68,7 @@ class Tracker extends Component {
     let initiative = Math.ceil(Math.random() * 20)
     this.setState({
       initiativeRolled: true,
+      battleOver: false
     }, () => {
       socket.emit('initiative rolled', {
         player_name: this.state.character.name,
