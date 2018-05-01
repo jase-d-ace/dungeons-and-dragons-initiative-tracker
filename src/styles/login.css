@@ -1,0 +1,59 @@
+
+.header {
+  align-items: center;
+  background-color: rgba(0,0,0,0.6);
+  color: white;
+  width: 100%;
+  text-align: center;
+}
+
+.Login {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  background-color: aliceblue;
+  height: 75%;
+  width: 50%;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  width: 50%;
+  margin-top: 25%;
+}
+
+.link-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.link {
+  justify-content: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.input-field {
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin: 3%;
+}
+
+.submit-button {
+  background-color: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}

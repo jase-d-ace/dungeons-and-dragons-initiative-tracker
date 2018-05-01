@@ -1,0 +1,30 @@
+.Tracker {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  background-color: aliceblue;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.input-field {
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin: 3%;
+}
+
+.submit-button {
+  background-color: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
