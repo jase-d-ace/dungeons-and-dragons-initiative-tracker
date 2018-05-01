@@ -48,15 +48,21 @@ class Login extends Component {
   render() {
     return (
       <div className='Login'>
-        <h1>Login to get rolling!</h1>
-        <form onSubmit={this.handleFormSubmit} className='form-container'>
-          <input type='text' className='input-field' onChange={this.handleInputChange} name='name' placeholder='name' />
-          <input type='password' className='input-field' onChange={this.handleInputChange} name='password' placeholder='password' />
-          <input type='submit' className='input-field submit-button' value='let us do it' />
-        </form>
-        <Link to='/signup'>Register instead?</Link>
-        <Link to='/admin'>Log in as DM instead?</Link>
-      { this.state.fireRedirect ? <Redirect to='/tracker' /> : '' }
+        <div className='login-container'>
+          <div className='header'>
+            <h1>Login to get rolling!</h1>
+          </div>
+          <form onSubmit={this.handleFormSubmit} className='form-container'>
+            <input type='text' className='input-field' onChange={this.handleInputChange} name='name' placeholder='name' />
+            <input type='password' className='input-field' onChange={this.handleInputChange} name='password' placeholder='password' />
+            <input type='submit' className='input-field submit-button' value='let us do it' />
+          </form>
+          <div className='link-container'>
+            <Link className='link' to='/signup'>Register instead?</Link>
+            <Link className='link' to='/admin'>Log in as DM instead?</Link>
+          </div>
+        { this.state.fireRedirect ? <Redirect to='/tracker' /> : '' }
+        </div>
       </div>
     );
   };
