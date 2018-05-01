@@ -3,7 +3,9 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom'
 import Character from './Character';
-import '../styles/main.css'
+import '../styles/main.css';
+import '../styles/tracker.css';
+
 //found the fix for the refresh bug here:
 //https://stackoverflow.com/questions/41924713/node-js-socket-io-page-refresh-multiple-connections
 const socket = io({ transports: ['websocket'], upgrade: false });
@@ -101,7 +103,7 @@ class Tracker extends Component {
       <div className="Tracker">
       {this.state.character ? <Character {...this.state.character} /> : ''}
       {this.state.activeTurn ? <button onClick={this.passTurn}>Pass your turn</button> : ''}
-      {this.state.initiativeRolled ? '' : <form onSubmit={this.handleFormSubmit}> <input type='number' name='initiative' onChange={this.handleInputChange} placeholder='write your dice roll here' min='0' max='30' required /> <input type='submit' value='Roll it' /></form>}
+      {this.state.initiativeRolled ? '' : <form className='form-container' onSubmit={this.handleFormSubmit}> <input className='input-field' type='number' name='initiative' onChange={this.handleInputChange} placeholder='initiative' min='0' max='30' required /> <input className='input-field submit-button'  type='submit' value='Roll it' /></form>}
         <h1>{this.state.initiativeRolled ? 'Initiative: ' + this.state.initiative : 'Roll for initiative!!'}</h1>
         <h1>{this.state.activeTurn ? 'Your turn! Knock em dead!!' : 'Wait your turn!'}</h1>
         {this.state.fireRedirect ? <Redirect to='/' /> : ''}
