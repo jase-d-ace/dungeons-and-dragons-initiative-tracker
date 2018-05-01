@@ -9,12 +9,13 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  width: 25%;
 }
 
-.input-field {
+.tracker-input-field {
   align-items: center;
-  height: 100%;
-  width: 100%;
+  height: 200%;
+  width: 200%;
   margin: 3%;
 }
 
