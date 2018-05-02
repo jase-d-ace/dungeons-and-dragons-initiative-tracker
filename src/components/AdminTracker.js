@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom'
+import '../styles/main.css';
+import '../styles/tracker.css';
 const socket = io({ transports: ['websocket'], upgrade: false })
 
 class AdminTracker extends Component {
@@ -102,11 +104,11 @@ class AdminTracker extends Component {
 
   render() {
     return(
-      <div className='AdminTracker'>
+      <div className='Tracker'>
         <form onSubmit={this.handleFormSubmit}>
-          <input type='text' name='monster' onChange={this.handleInputChange} placeholder='add a monster name' />
-          <input type='number' min='0' max='30' onChange={this.handleInputChange} name='initiative' />
-          <input type='submit' value='add to initiative' />
+          <input className='input-field tracker-input-field' type='text' name='monster' onChange={this.handleInputChange} placeholder='add a monster name' />
+          <input className='input-field tracker-input-field' type='number' min='0' max='30' onChange={this.handleInputChange} name='initiative' />
+          <input className='input-field tracker-input-field submit-button' type='submit' value='add to initiative' />
         </form>
         {this.state.activeTurn ? <button onClick={this.passTurn}>Pass Your Turn</button> : 'Player turn. Let them do their thing.'}
         <ul>
