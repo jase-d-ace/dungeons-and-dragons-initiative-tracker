@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
+import '../styles/main.css';
+import '../styles/login.css';
 
 class Register extends Component {
 
@@ -45,14 +47,16 @@ class Register extends Component {
 
   render() {
     return(
-      <div className='Register'>
-        <h1>So ye want to play some dnd, eh?</h1>
-        <form onSubmit={this.handleFormSubmit}>
-          <input type='text' onChange={this.handleInputChange} name='name' placeholder='your name here' />
-          <input type='password' onChange={this.handleInputChange} name='password' placeholder='your password here' />
-          <input type='submit' value='lets get started' />
-        </form>
-      { this.state.fireRedirect ? <Redirect to='/' /> : '' }
+      <div className='Login'>
+        <div className='login-container'>
+          <h1>So ye want to play some dnd, eh?</h1>
+          <form onSubmit={this.handleFormSubmit}>
+            <input className='input-field'  type='text' onChange={this.handleInputChange} name='name' placeholder='your name here' />
+            <input className='input-field'  type='password' onChange={this.handleInputChange} name='password' placeholder='your password here' />
+            <input className='input-field' type='submit' value='lets get started' />
+          </form>
+        { this.state.fireRedirect ? <Redirect to='/' /> : '' }
+        </div>
       </div>
     )
   }

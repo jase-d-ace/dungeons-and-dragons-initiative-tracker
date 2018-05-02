@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
+import '../styles/main.css';
+import '../styles/login.css';
 
 class AdminRegister extends Component {
 
@@ -45,14 +47,16 @@ class AdminRegister extends Component {
 
   render() {
     return (
-      <div className='AdminRegister'>
-        <h1>Welcome, DM. Tell us your story</h1>
-        <form onSubmit={this.handleFormSubmit}>
-          <input type='text' name='name' onChange={this.handleInputChange} placeholder='write your name here' />
-          <input type='password' name='password' onChange={this.handleInputChange} placeholder='write your password here' />
-          <input type='submit' value='start torturing your players' />
-        </form>
-        {this.state.fireRedirect ? <Redirect to='/admin/tracker' /> : ''}
+      <div className='Login'>
+        <div className='login-container'>
+          <h1>Welcome, DM. Tell us your story</h1>
+          <form onSubmit={this.handleFormSubmit}>
+            <input className='input-field' type='text' name='name' onChange={this.handleInputChange} placeholder='write your name here' />
+            <input  className='input-field' type='password' name='password' onChange={this.handleInputChange} placeholder='write your password here' />
+            <input  className='input-field submit-button' type='submit' value='start torturing your players' />
+          </form>
+          {this.state.fireRedirect ? <Redirect to='/admin/tracker' /> : ''}
+        </div>
       </div>
     )
   }
