@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import axios from 'axios';
+import services from '../services';
 import { Redirect } from 'react-router-dom'
 import Character from './Character';
 import '../styles/main.css';
@@ -28,8 +28,8 @@ class Tracker extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/characters')
-    .then( character => {
+    services.setCharacter()
+      .then( character => {
       this.setState({
         character: character.data.character
       }, () => {

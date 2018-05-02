@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import services from '../services'
 import { Redirect, Link } from 'react-router-dom';
 import '../styles/main.css';
 import '../styles/login.css';
@@ -27,15 +27,8 @@ class Login extends Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
-    axios({
-      method: 'POST',
-      url: '/auth/player/login',
-      data: {
-        name: this.state.name.toLowerCase(),
-        password: this.state.password
-      }
-    })
-    .then( data => {
+    services.authenticate(this.state, '/auth/player/login')
+      .then( data => {
       this.setState({
         fireRedirect: true
       });

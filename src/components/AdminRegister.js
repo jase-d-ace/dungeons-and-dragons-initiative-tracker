@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import services from '../services';
 import { Redirect, Link } from 'react-router-dom';
 import '../styles/main.css';
 import '../styles/login.css';
@@ -27,15 +27,8 @@ class AdminRegister extends Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
-    axios({
-      method: 'POST',
-      url: '/auth/admin/register',
-      data: {
-        name: this.state.name.toLowerCase(),
-        password: this.state.password
-      }
-    })
-    .then( admin => {
+    services.authenticate(this.state, '/auth/admin/register')
+      .then( admin => {
       this.setState({
         fireRedirect: true
       })

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import services from '../services';
 import { Redirect, Link } from 'react-router-dom';
 import '../styles/main.css';
 import '../styles/login.css';
@@ -22,31 +22,24 @@ class Register extends Component {
     let value = e.target.value;
     this.setState({
       [name]: value
-    })
+    });
   };
 
   handleFormSubmit(e) {
     e.preventDefault();
-    axios({
-      method:'POST',
-      url: '/auth/player/register',
-      data: {
-        name: this.state.name.toLowerCase(),
-        password: this.state.password
-      }
-    })
-    .then( user => {
+    services.authenticate(this.state, '/auth/player/register')
+      .then( user => {
       this.setState({
         fireRedirect: true
-      })
+      });
     })
     .catch( err =>{
       console.log(err)
-    })
-  }
+    });
+  };
 
   render() {
-    return(
+    return (
       <div className='Login'>
         <div className='login-container'>
           <h1>So ye want to play some dnd, eh?</h1>
@@ -58,8 +51,8 @@ class Register extends Component {
         { this.state.fireRedirect ? <Redirect to='/' /> : '' }
         </div>
       </div>
-    )
-  }
+    );
+  };
 
 };
 

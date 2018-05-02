@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import axios from 'axios';
 import { Redirect } from 'react-router-dom'
 import '../styles/main.css';
 import '../styles/tracker.css';
