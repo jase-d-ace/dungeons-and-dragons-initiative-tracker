@@ -19,3 +19,15 @@ comes up.
 * Players can submit their initiatives to the DM
 * The DM can add and remove monsters from the battle
 * Players can only pass their turn if it is currently their turn
+
+## Installation Instructions
+
+1. `git clone` this repository using either HTTPS or SSH
+2. cd `dungeons-and-dragons-initiative-tracker`
+3. `npm install`
+4. `npm run build-dev` and `npm run dev` in two separate but concurrent terminal windows
+5. navigate to `localhost:3000` in your browser
+
+
+# Important Note
+This app is currently only meant to be used for my own dnd group, which means all of the player data has been hardcoded and there currently is no way to have separate sessions running at once. This app is meant for use by me and my friends and does not support public use. Feel free to browse the code, though.
