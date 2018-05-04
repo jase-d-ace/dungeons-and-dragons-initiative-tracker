@@ -10,6 +10,7 @@ comes up.
 * Socket.io (Real-Time user-user connection)
 * React (Quick and responsive front-end)
 * Webpack 3 (Build Tool/Javascript Compiler)
+* PostgreSQL (Relational database to hold character information)
 
 ## Currently Available Features
 
@@ -31,3 +32,5 @@ comes up.
 
 # Important Note
 This app is currently only meant to be used for my own dnd group, which means all of the player data has been hardcoded and there currently is no way to have separate sessions running at once. This app is meant for use by me and my friends and does not support public use. Feel free to browse the code, though.
+
+If you want to run it locally, create a few test accounts using the app's GUI, AND THEN run your seed file. Unfortunately, since this app is only meant for my group, I've written out all of the seed data under the assumption that I've created accounts for all of my friends already. So create five player accounts and one DM account, and then run the seed file.
