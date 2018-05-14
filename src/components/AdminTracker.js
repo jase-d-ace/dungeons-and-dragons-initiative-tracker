@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import { Redirect } from 'react-router-dom'
 import '../styles/main.css';
 import '../styles/tracker.css';
+import '../styles/admin.css';
 const socket = io({ transports: ['websocket'], upgrade: false })
 
 class AdminTracker extends Component {
@@ -44,8 +45,10 @@ class AdminTracker extends Component {
     if(this.state.initiativeOrder) {
       return this.state.initiativeOrder.map( el => {
         return (
-          <li key={el.id}>
-            {el.name} initiative: {el.initiative} <button onClick={() => this.killMonster(el)}>Kill this monster?</button>
+          <li className='list-item-container' key={el.id}>
+            <div className='item'>
+              <p>{el.name}</p> <p>initiative: {el.initiative}</p> <button className='button' onClick={() => this.killMonster(el)}>Kill this monster?</button>
+            </div>
           </li>
         )
       })
@@ -110,7 +113,7 @@ class AdminTracker extends Component {
           <input className='input-field tracker-input-field submit-button' type='submit' value='add to initiative' />
         </form>
         {this.state.activeTurn ? <button onClick={this.passTurn}>Pass Your Turn</button> : 'Player turn. Let them do their thing.'}
-        <ul>
+        <ul className='list-container'>
           {this.renderInitiative()}
         </ul>
         <button onClick={this.endBattle}>End the battle?</button>

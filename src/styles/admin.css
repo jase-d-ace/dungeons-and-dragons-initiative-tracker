@@ -1,0 +1,28 @@
+.list-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.list-item-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.item {
+  justify-content: space-between;
+}
+
+.button {
+  background-color: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 16px;
+}
