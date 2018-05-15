@@ -135,6 +135,16 @@ io.on('connection', (socket) => {
     };
   });
 
+
+  //socket event that ends a battle, and sends that message to the entire room
+  /*
+   * No payload to this event.
+   * This event is triggered via a button as seen from the DM's browser.
+   * Once clicked, the event is sent here, and then all global variables are reset to their original values
+   * Initiative order is set to a blank array, and currentTurn becomes 1 so that tracking can begin again once a new battle starts.
+   * Once everything has been done, the event is emitted to the entire room, and client-side code stops the battle from progressing any further.
+   */
+
   socket.on('end battle', () => {
     initiativeOrder = [];
     currentTurn = 1;
