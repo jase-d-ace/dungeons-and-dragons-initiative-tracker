@@ -70,9 +70,7 @@ let currentTurn = 1;
 let initiativeOrder = [];
 
 // helper function that sorts the initiative order array
-const sortInitiative = arr => {
-  return arr.sort((a, b) => a.initiative < b.initiative)
-}
+const sortInitiative = arr => arr.sort((a, b) => a.initiative < b.initiative)
 //set default transport protocol to websocket instead of http polling
 io.set('transports', ['websocket']);
 
